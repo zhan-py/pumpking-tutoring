@@ -1,0 +1,29 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+  <h1 class="title">View booking</h1>
+  <div>
+    Tutee: {{ booking.tutee.username }} <br>
+    Tutor: {{ booking.tutor.username }} <br>
+    Subject: {{ booking.subject }} <br>
+    Start from: {{ booking.start_time }} and end at: {{ booking.end_time }} 
+    Date: {{ booking.date }}
+  </div>
+
+  {% for message in booking.conversationmessages.all %}
+    <p>{{message.created_by.username}} sent {{message.created_at|timesince}} ago</p>
+    <p>{{ message.content }}</p>
+  {% empty %}
+    <p>No message yet.</p>
+  {% endfor %}
+
+  <form action="." method="post">
+    {% csrf_token %}
+    <div>
+      <textarea name="content" class="textarea"></textarea>
+    </div>
+    <div>
+      <button class="btn btn-info">Send</button>
+    </div>
+  </form>
+{% endblock %}

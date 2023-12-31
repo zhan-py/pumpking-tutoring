@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+  <h1 class="title">Check new notifications</h1>
+    {% for notification in notifications %}
+      <div>
+        <a href="{% url 'notifications' %}?goto=view_booking&notification={{notification.id}}">
+          <strong>{{ notification.created_by.username }}</strong> 
+          {% if notification.notification_type == 'message' %}
+            sent you a message
+          {% elif notification.notification_type == 'booking' %}
+            applied for your job
+          {% endif %}
+          <small>{{ notification.created_at|timesince }} ago</small>
+        </a>
+      </div>
+    {% empty %}
+      <p>No new notification</p>
+    {% endfor %}
+{% endblock %}

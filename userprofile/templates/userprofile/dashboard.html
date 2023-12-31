@@ -1,0 +1,24 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+  <h1 class="title">dashboard</h1>
+  {% if userprofile.is_tutor %}
+    <p>Hi tutor {{ request.user.username }}</p>
+    {% for booking in  request.user.bookings_received.all %}
+      <div>
+        {{ booking.tutee.username }} made a booking for subject {{ booking.subject }} 
+        start from {{ booking.start_time }} and end at {{ booking.end_time }} on {{ booking.date }}
+        <a href="{% url 'view_booking' booking.id %}">Click to View</a>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Hi tutee  {{ request.user.username }}</p>
+    {% for booking in  request.user.bookings_made.all %}
+      <div>
+        You made a booking to {{ booking.tutor.username }} for subject {{ booking.subject }} 
+        start from {{ booking.start_time }} and end at {{ booking.end_time }} on {{ booking.date }}
+        <a href="{% url 'view_booking' booking.id %}">Click to View</a>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endblock %}

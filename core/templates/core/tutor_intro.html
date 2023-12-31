@@ -1,0 +1,7 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+  <h1 class="title">this is tutor intro</h1>
+    <p>Hi I'm tutor - {{ tutor.username }} id: {{ tutor.id }}</p>
+    <a href="{% url 'make_booking' tutor.id %}">Booking now</a>
+{% endblock %}

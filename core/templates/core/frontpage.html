@@ -1,0 +1,14 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+  <h1>Reach Tutors</h1>
+  <form action="." method="get">
+    <div><input type="text" value="" name="query"></div>
+    <button class="btn btn-info">Search</button>
+  </form>
+  {% for user in tutor_users %}
+    <div>
+      <a href="{% url 'tutor_intro' user.id %}">{{user.username}}</a>
+    </div>
+  {% endfor %}
+{% endblock %}
