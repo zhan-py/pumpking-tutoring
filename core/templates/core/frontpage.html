@@ -1,14 +1,44 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-  <h1>Reach Tutors</h1>
-  <form action="." method="get">
-    <div><input type="text" value="" name="query"></div>
-    <button class="btn btn-info">Search</button>
-  </form>
-  {% for user in tutor_users %}
-    <div>
-      <a href="{% url 'tutor_intro' user.id %}">{{user.username}}</a>
+  <div class="container text-center">
+    <h1 class="mt-2">Find the right tutor for you.</h1>
+    <div
+      class="row justify-content-center align-items-center g-2 mt-3"
+    >
+      <div class="col col-lg-3">
+        <form action="." method="get" class="d-flex justify-content-between">
+          <div>
+            <input class="form-control" type="text" value="" name="query" placeholder="What to learn?">
+          </div>
+          <button class="btn btn-primary px-2">Search</button>
+        </form>
+      </div>
     </div>
-  {% endfor %}
+  </div>
+
+  <div class="container d-flex justify-content-center">
+    {% if not tutor_users %}
+      <p class="mt-5">Sorry, no result found. Try to explore something else!</p>
+    {% endif %}
+    <div class="row m-5">
+        {% for user in tutor_users %}
+            <div class="col-md-4 mb-4 p-5">
+              <div class="card" style="width: 18rem;">
+                <a href="{% url 'tutor_intro' user.id %}"><img src="{{ user.userprofile.image.url }}" class="card-img-top" alt="{{user.username}} photo"></a>
+                <div class="card-body">
+                  <h5 class="card-title">{{user.username}}</h5>
+                  <p class="card-text">{{ user.userprofile.brief_intro }}</p>
+                  <a href="{% url 'tutor_intro' user.id %}" class="btn btn-primary">View Profile</a>
+                </div>
+              </div>
+            </div>
+            {% if forloop.counter|divisibleby:3 %}
+                </div>
+                <div class="row">
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
 {% endblock %}

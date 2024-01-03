@@ -1,0 +1,42 @@
+{% extends "core/base.html" %} 
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container col-lg-6 my-5">
+  <h1>View Profile</h1>
+  <div class="row">
+    <div class="d-flex mt-3 align-items-center">
+      <div>
+        <img class="rounded-circle account-img" src="{{ user.userprofile.image.url }}" style="width: 90px; height: auto;"/>
+      </div>
+      <div>
+        <h2 class="account-heading">{{ user.username }}</h2>
+    </div>
+  </div>
+
+  {% if messages %}
+    <div class="ml-3 mt-3">
+      <ul>
+        {% for message in messages %}
+          <li{% if message.tags %} class="text-primary {{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <section class="mt-4">
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+  
+        {{ u_form|crispy}}
+        {{ p_form|crispy}}
+  
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit">Update</button>
+      </div>
+    </form>
+  </section>
+</div>
+
+
+{% endblock content %}

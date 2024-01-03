@@ -1,24 +1,71 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-  <h1 class="title">dashboard</h1>
   {% if userprofile.is_tutor %}
-    <p>Hi tutor {{ request.user.username }}</p>
-    {% for booking in  request.user.bookings_received.all %}
-      <div>
-        {{ booking.tutee.username }} made a booking for subject {{ booking.subject }} 
-        start from {{ booking.start_time }} and end at {{ booking.end_time }} on {{ booking.date }}
-        <a href="{% url 'view_booking' booking.id %}">Click to View</a>
+    <div class="container-lg mt-5 col-10">
+      <div class="row justify-content-center align-items-center">
+          <div class="col-md-8 text-center text-md-start">
+              <h1>
+                  <div class="display-2">Hi {{ request.user.username }} !</div>
+                  <div class="display-5 text-muted">{% if request.user.bookings_received.all %} Check the bookings {% else %} You have received any booking yet. {% endif %}</div>
+              </h1>
+          </div>
+          <div class="col-md-4 text-center">
+            <div class="row">
+                <div class="col">
+                    <span data-bs-placement="bottom" title="Archery Super Hero">
+                        <img class="img-fluid rounded-circle" style="width: 90px; height: 90px;" src="{{ userprofile.image.url }}" alt="">
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <a href="{% url 'profile' %}" class="btn btn-primary mt-1">Update profile</a>
+                </div>
+            </div>
+          </div>
       </div>
-    {% endfor %}
+    </div>
+
+    <div class="container col-lg-9">
+      <div class="row">
+        <ul class="list-group list-group-flush my-5">
+          {% for booking in  request.user.bookings_received.all %}
+              <li class="list-group-item">
+                <img class="rounded-circle account-img" src="{{ booking.tutee.userprofile.image.url }}" style="width: 40px; height: 40px;"/>
+                <b>{{ booking.tutee.username }} </b>made a booking for subject {{ booking.subject }} 
+                start from {{ booking.start_time }} and end at {{ booking.end_time }} on <b>{{ booking.date }}</b>
+                <a href="{% url 'view_booking' booking.id %}">Click to View</a>
+              </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
   {% else %}
-    <p>Hi tutee  {{ request.user.username }}</p>
-    {% for booking in  request.user.bookings_made.all %}
-      <div>
-        You made a booking to {{ booking.tutor.username }} for subject {{ booking.subject }} 
-        start from {{ booking.start_time }} and end at {{ booking.end_time }} on {{ booking.date }}
-        <a href="{% url 'view_booking' booking.id %}">Click to View</a>
+    <div class="container-lg mt-5 col-9">
+      <div class="row justify-content-start align-items-center">
+          <div class="col-md-8 text-center text-md-start">
+              <h1>
+                  <div class="display-2">Hi {{ request.user.username }} <img class="img-fluid rounded-circle" style="width: 90px; height: 90px;" src="{{ userprofile.image.url }}" alt=""> !</div>
+                  <div class="display-5 text-muted">{% if request.user.bookings_made.all %} Check the bookings {% else %} You have made any booking yet. {% endif %}</div>
+              </h1>
+          </div>
       </div>
-    {% endfor %}
+    </div>
+
+    <div class="container col-lg-9">
+      <div class="row">
+        <ul class="list-group list-group-flush my-5">
+          {% for booking in request.user.bookings_made.all %}
+              <li class="list-group-item">
+                You made a booking to <b>{{ booking.tutor.username }}</b> for subject {{ booking.subject }} 
+                start from {{ booking.start_time }} and end at {{ booking.end_time }} on <b>{{ booking.date }}</b>
+                <a href="{% url 'view_booking' booking.id %}">Click to View</a>
+              </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
   {% endif %}
+
 {% endblock %}

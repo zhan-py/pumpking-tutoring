@@ -1,33 +1,33 @@
 {% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-  <div class="">
-    <h1 class="">Apply for job</h1>
-    <form action="." method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      
+  <div class="container col-lg-6 mt-5">
+    <div class="row justify-content-center">
+      <h1 class="">Book Session</h1>
       {% if form.errors %}
-        {% for error in form.errors %}
-          <div class="">
-            {{ error }}
-          </div>
-        {% endfor %}
+          {% for error in form.errors %}
+            <div class="">
+              {{ error }}
+            </div>
+          {% endfor %}
       {% endif %}
-      
+      <form action="." method="post">
+        {% csrf_token %}
+        {{ form|crispy }}  
   
-      <div class="">
-        <label>Questions or topics</label>
-        <div class="">
-          <textarea class="textarea" type="textarea" name="content" id="id_content" ></textarea>
+        <!-- <div class="">
+          <label>Questions or topics</label>
+          <div class="">
+            <textarea class="form-control" type="textarea" name="content" id="id_content" ></textarea>
+          </div>
+        </div> -->
+    
+        <div class="mt-3">
+          <button class="btn btn-primary">Submit</button>
         </div>
-      </div>
-  
-      <div class="">
-        <div class="">
-          <button class="btn btn-info">Submit</button>
-        </div>
-      </div>
-    </form>
+
+      </form>
+    </div>
   </div>
 {% endblock %}
