@@ -24,3 +24,6 @@ class Booking(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ['-created_at']

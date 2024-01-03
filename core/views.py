@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from django.contrib.auth.forms import UserCreationForm
+from userprofile.forms import UserCreationForm
 from userprofile.models import Userprofile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -10,7 +10,7 @@ def frontpage(request):
   tutor_users = User.objects.filter(userprofile__is_tutor=True)
   query = request.GET.get('query', '')
   if query:
-    tutor_users = tutor_users.filter(Q(username__icontains=query))
+    tutor_users = tutor_users.filter(Q(username__icontains=query) | Q(userprofile__self_intro__icontains=query) | Q(userprofile__brief_intro__icontains=query))
   return render(request, 'core/frontpage.html', {'tutor_users': tutor_users})
 
 

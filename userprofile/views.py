@@ -4,6 +4,8 @@ from booking.models import Booking
 from userprofile.models import ConversationMessage
 from notification.utilities import create_notification
 from notification.models import Notification
+from .forms import UserUpdateForm, ProfileUpdateForm
+from django.contrib import messages
 
 
 @login_required
@@ -30,3 +32,28 @@ def view_booking(request, booking_id):
         create_notification(request, booking.tutor, notification_type=Notification.MESSAGE, booking_id = booking.id)
         return redirect('view_booking', booking_id)
   return render(request, 'userprofile/view_booking.html', {'booking': booking})
+
+
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST,
+                                   request.FILES,
+                                   instance=request.user.userprofile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f'Your account has been updated!')
+            return redirect('profile') # Redirect back to profile page
+
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.userprofile)
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form
+    }
+
+    return render(request, 'userprofile/profile.html', context)
