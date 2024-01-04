@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from booking.models import Booking
 from PIL import Image
+from booking.models import Program
 
 class Userprofile(models.Model):
   user = models.OneToOneField(User, related_name='userprofile', on_delete=models.CASCADE)
@@ -10,6 +11,7 @@ class Userprofile(models.Model):
   self_intro = models.TextField(default='')
   brief_intro = models.TextField(default='')
   hourly_rate = models.FloatField(default=0)
+  program = models.ForeignKey(Program, related_name='userprofile', on_delete=models.SET_NULL, null=True, blank=True)
 
   def __str__(self) -> str:
     return self.user.username
