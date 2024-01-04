@@ -36,7 +36,7 @@ def signup(request):
         userprofile.save()
 
       login(request, user)
-      return redirect('dashboard')
+      return redirect('frontpage')
     
   else:
     form = UserCreationForm()

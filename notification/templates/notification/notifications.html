@@ -13,7 +13,7 @@
           {% if notification.notification_type == 'message' %}
             sent you a message
           {% elif notification.notification_type == 'booking' %}
-            applied for your job
+            booked a session
           {% endif %}
           <small>{{ notification.created_at|timesince }} ago</small>
           <a href="{% url 'notifications' %}?goto=view_booking&notification={{notification.id}}">
