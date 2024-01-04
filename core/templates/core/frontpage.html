@@ -28,6 +28,7 @@
                 <a href="{% url 'tutor_intro' user.id %}"><img src="{{ user.userprofile.image.url }}" class="card-img-top" alt="{{user.username}} photo"></a>
                 <div class="card-body">
                   <h5 class="card-title">{{user.username}}</h5>
+                  <p class="card-text">{{ user.userprofile.program }}</p>
                   <p class="card-text">{{ user.userprofile.brief_intro }}</p>
                   <a href="{% url 'tutor_intro' user.id %}" class="btn btn-primary">View Profile</a>
                 </div>

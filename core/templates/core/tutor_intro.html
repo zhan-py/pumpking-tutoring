@@ -6,6 +6,8 @@
       <div class="col col-lg-7">
         <h1>{{ tutor.userprofile.brief_intro }}</h1>
         <h2 class="mt-5">About {{ tutor.username }} </h2>
+        <p><b>Program: </b>{{ tutor.userprofile.program }}</p>
+        <p><b>Hourly Rate: </b>${{ tutor.userprofile.hourly_rate }}</p>
         <p>{{ tutor.userprofile.self_intro }}</p>
       </div>
       <div class="col col-lg-3">
