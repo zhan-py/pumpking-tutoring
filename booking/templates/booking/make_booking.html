@@ -2,19 +2,67 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-  <div class="container col-lg-6 mt-5">
+  <div class="container col-lg-4 mt-5" id="make-booking-app">
     <div class="row justify-content-center">
       <h1 class="">Book Session</h1>
-      {% if form.errors %}
+      <!-- {% if form.errors %}
           {% for error in form.errors %}
             <div class="">
               {{ error }}
             </div>
           {% endfor %}
-      {% endif %}
-      <form action="." method="post">
+      {% endif %} -->
+
+      <div class="is-danger" v-if="errors.length">
+        <p v-for="error in errors" class="text-danger">
+          [[ error ]]
+        </p>
+      </div>
+
+      <form action="." method="post" v-on:submit="validateForm">
         {% csrf_token %}
-        {{ form|crispy }}  
+        <!-- {{ form|crispy }}   -->
+        <!-- <div class="form-group">
+          {{form.subject|as_crispy_field}}
+        </div> -->
+
+        <div class="form-group mt-2">
+          <label class="form-label">Subject</label>
+          <div class="">
+            <select class="form-control" name="subject" id="id_subject" v-model="subject">
+              <option value="" disabled selected>Choose a subject</option>
+              {% for option in form.subject.field.choices %}
+                {% if option.0 %}
+                  <option value="{{ option.0 }}">{{ option.1 }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group mt-3">
+          <label class="form-label">Date</label>
+          <div class="">
+            <input class="form-control" type="date" name="date" id="id_date" v-model="date">
+          </div>
+        </div>
+
+
+        <div class="form-group mt-3">
+          <label class="form-label">Start Time</label>
+          <div class="">
+            <input class="form-control" type="time" name="start_time" id="id_start_time" v-model="start_time">
+          </div>
+        </div>
+
+
+        <div class="form-group mt-3">
+          <label class="form-label">End Time</label>
+          <div class="">
+            <input class="form-control" type="time" name="end_time" id="id_end_time" v-model="end_time" @input="checkTime">
+            <p v-if="isInvalidTime" class="mt-1 text-danger">End time should be at least one hour after start time.</p>
+          </div>
+        </div>
   
         <!-- <div class="">
           <label>Questions or topics</label>
@@ -30,4 +78,59 @@
       </form>
     </div>
   </div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    const makeBookingApp = {
+      data() {
+        return {
+          subject: '',
+          start_time: '',
+          end_time: '',
+          date: '',
+          errors: [],
+          isInvalidTime: false,
+        }
+      },
+      delimiters:['[[', ']]'],
+      computed: {
+        isValidTime() {
+          return this.calculateTimeDifference() >= 60;
+        },
+      },
+      methods: {
+        validateField(fieldValue, fieldName) {
+          if (fieldValue == '') this.errors.push(`The ${fieldName} is missing!`)
+        },
+        
+        validateForm(e) {
+          this.errors = []
+          this.validateField(this.subject, 'subject');
+          this.validateField(this.date, 'date');
+          this.validateField(this.start_time, 'start time');
+          this.validateField(this.end_time, 'end time');
+          if (this.calculateTimeDifference() <60) this.errors.push('End time should be at least one hour after start time.');
+          if (this.errors.length) {
+            e.preventDefault()
+            return false
+          } else {
+            return true
+          }
+        },
+
+        checkTime() {
+          this.isInvalidTime = !this.isValidTime;
+        },
+        calculateTimeDifference() {
+          const start = new Date(`2000-01-01 ${this.start_time}`);
+          const end = new Date(`2000-01-01 ${this.end_time}`);
+          const difference = (end - start) / (1000 * 60);
+          return difference;
+        },
+      },
+    }
+
+    Vue.createApp(makeBookingApp).mount("#make-booking-app");
+  </script>
 {% endblock %}

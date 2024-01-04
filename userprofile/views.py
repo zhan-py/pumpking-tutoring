@@ -4,7 +4,7 @@ from booking.models import Booking
 from userprofile.models import ConversationMessage
 from notification.utilities import create_notification
 from notification.models import Notification
-from .forms import UserUpdateForm, ProfileUpdateForm
+from .forms import UserUpdateForm, ProfileUpdateForm, TuteeProfileUpdateForm
 from django.contrib import messages
 
 
@@ -38,9 +38,14 @@ def view_booking(request, booking_id):
 def profile(request):
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
-        p_form = ProfileUpdateForm(request.POST,
-                                   request.FILES,
-                                   instance=request.user.userprofile)
+        if request.user.userprofile.is_tutor:
+            p_form = ProfileUpdateForm(request.POST,
+                                      request.FILES,
+                                      instance=request.user.userprofile)
+        else:
+            p_form = TuteeProfileUpdateForm(request.POST,
+                                      request.FILES,
+                                      instance=request.user.userprofile)
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
@@ -49,7 +54,10 @@ def profile(request):
 
     else:
         u_form = UserUpdateForm(instance=request.user)
-        p_form = ProfileUpdateForm(instance=request.user.userprofile)
+        if request.user.userprofile.is_tutor:
+            p_form = ProfileUpdateForm(instance=request.user.userprofile)
+        else:
+            p_form = TuteeProfileUpdateForm(instance=request.user.userprofile)
 
     context = {
         'u_form': u_form,

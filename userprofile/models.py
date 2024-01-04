@@ -19,6 +19,7 @@ class Userprofile(models.Model):
   def save(self, *args, **kwargs):
         super().save()
         img = Image.open(self.image.path)
+        img = img.convert("RGB")
         width, height = img.size  # Get dimensions
 
         if width > 300 and height > 300:
