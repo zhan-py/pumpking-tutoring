@@ -36,7 +36,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for booking in  request.user.bookings_received.all %}
+            {% for booking in page.object_list %}
               <tr>
                 <th scope="row" class="align-middle">{{ forloop.counter }}</th>
                 <td class="align-middle"><img class="rounded-circle account-img" src="{{ booking.tutee.userprofile.image.url }}" style="width: 40px; height: 40px;"/>
@@ -88,7 +88,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for booking in  request.user.bookings_made.all %}
+            {% for booking in page.object_list %}
               <tr>
                 <th scope="row" class="align-middle">{{ forloop.counter }}</th>
                 <td class="align-middle"><img class="rounded-circle account-img" src="{{ booking.tutor.userprofile.image.url }}" style="width: 40px; height: 40px;"/>
@@ -107,5 +107,25 @@
       {% endif %}
     </div>
   {% endif %}
+
+  <div class="container col-lg-10">
+    <div class="pagination">
+      <span class="step-links">
+        {% if page.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ page.previous_page_number }}">previous</a>
+        {% endif %}
+  
+        <span class="current">
+          Page {{ page.number }} of {{ page.paginator.num_pages }}.
+        </span>
+  
+        {% if page.has_next %}
+          <a href="?page={{ page.next_page_number }}">next</a>
+          <a href="?page={{ page.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+      </span>
+    </div>
+  </div>
 
 {% endblock %}

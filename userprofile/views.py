@@ -6,11 +6,25 @@ from notification.utilities import create_notification
 from notification.models import Notification
 from .forms import UserUpdateForm, ProfileUpdateForm, TuteeProfileUpdateForm
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage
 
 
 @login_required
 def dashboard(request):
-  return render(request, 'userprofile/dashboard.html', {'userprofile': request.user.userprofile})
+  if request.user.userprofile.is_tutor:
+    bookings = request.user.bookings_received.all()
+  else:
+    bookings = request.user.bookings_made.all()
+  
+  items_per_page = 10
+  paginator = Paginator(bookings, items_per_page)
+  page_number = request.GET.get('page', 1)
+  try:
+    page = paginator.page(page_number)
+  except EmptyPage:
+    page = paginator.page(paginator.num_pages)
+
+  return render(request, 'userprofile/dashboard.html', {'userprofile': request.user.userprofile, 'page': page})
 
 
 @login_required
