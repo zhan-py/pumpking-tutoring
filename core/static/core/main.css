@@ -1,7 +1,26 @@
-/* #logo {
-  margin-left: 20px;
-} */
+button {
+  border: none !important;
+  outline: none !important;
+}
 
-#search-div {
-  margin-right: 26px;
+
+.btn-primary {
+  background-color: #EBA94A;
+  color: #ffffff; 
+  border: none;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; 
+}
+
+
+.btn-primary:hover {
+  background-color: #FFC77E; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
+}
+
+
+.btn-primary:active,
+.btn-primary:focus {
+  background-color: #C87429 !important; 
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); 
 }
