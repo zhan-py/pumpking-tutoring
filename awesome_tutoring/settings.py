@@ -156,3 +156,8 @@ else:
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': 'db.sqlite3',
     }}
+
+
+ALLOWED_HOSTS = [
+    'pumpking-tutoring.onrender.com',
+]
