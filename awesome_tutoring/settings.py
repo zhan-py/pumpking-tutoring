@@ -171,5 +171,6 @@ else:
 
 ALLOWED_HOSTS = [
     'pumpking-tutoring.onrender.com',
-    '127.0.0.1'
+    '127.0.0.1',
+    '*'
 ]
