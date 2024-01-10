@@ -14,13 +14,17 @@
       <div class="card" style="width: 30rem;">
         <img src="{% static 'core/images/bar.png' %}" class="card-img-top" alt="...">
         <div class="card-body">
-          <form method="post">
+          <form method="post" class="mb-3">
             {% csrf_token %}
             {{ form|crispy }}
             <button type="submit" class="btn btn-primary w-100" >Log in</button>
           </form>
+          <span>Don't have an account?</span>
+          <a href="{% url 'signup' %}" style="color: #EBA94A; text-decoration: none;">Sign up</a>
         </div>
       </div>
     </div>
+
+    
   </div>
 {% endblock %}
