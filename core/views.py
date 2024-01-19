@@ -14,7 +14,7 @@ def frontpage(request):
   return render(request, 'core/frontpage.html', {'tutor_users': tutor_users})
 
 
-@login_required
+# @login_required
 def tutor_intro(request, user_id):
   tutor = User.objects.get(pk=user_id)
   return render(request, 'core/tutor_intro.html', {'tutor': tutor})
